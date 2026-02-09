@@ -34,7 +34,6 @@
             padding-bottom: 80px;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, var(--secondary), #003366);
             padding: 20px 20px 30px;
@@ -55,7 +54,6 @@
             opacity: 0.8;
         }
 
-        /* Week Progress */
         .week-progress {
             padding: 20px;
             background: var(--card-bg);
@@ -119,7 +117,6 @@
             color: white;
         }
 
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -154,7 +151,6 @@
             margin-left: 4px;
         }
 
-        /* Day Tabs */
         .day-tabs {
             display: flex;
             gap: 8px;
@@ -202,7 +198,6 @@
             font-weight: 600;
         }
 
-        /* Workout Section */
         .workout-section {
             padding: 0 15px;
         }
@@ -227,7 +222,26 @@
             border-radius: 8px;
         }
 
-        /* Exercise Cards */
+        .add-exercise-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--card-bg);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .add-exercise-btn:active {
+            transform: scale(0.98);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
         .exercise-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -235,11 +249,29 @@
             margin-bottom: 12px;
             border: 1px solid var(--border);
             transition: all 0.3s;
+            position: relative;
         }
 
         .exercise-card.completed {
             opacity: 0.5;
             border-color: var(--success);
+        }
+
+        .remove-exercise {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .exercise-header {
@@ -363,7 +395,6 @@
             color: var(--text-secondary);
         }
 
-        /* Action Buttons */
         .action-btns {
             display: flex;
             gap: 10px;
@@ -405,7 +436,6 @@
             border: 1px solid var(--border);
         }
 
-        /* Timer */
         .timer-section {
             background: var(--card-bg);
             border-radius: 16px;
@@ -458,7 +488,6 @@
             color: white;
         }
 
-        /* Progress Tracker */
         .progress-section {
             padding: 20px 15px;
         }
@@ -491,30 +520,6 @@
             border-color: var(--primary);
         }
 
-        /* Complete Button */
-        .complete-workout-btn {
-            position: fixed;
-            bottom: 80px;
-            left: 15px;
-            right: 15px;
-            padding: 18px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(45, 216, 129, 0.4);
-            transition: all 0.2s;
-        }
-
-        .complete-workout-btn:active {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(45, 216, 129, 0.5);
-        }
-
-        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -551,7 +556,6 @@
             font-weight: 500;
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             animation: fadeIn 0.3s;
@@ -566,47 +570,94 @@
             to { opacity: 1; }
         }
 
-        /* Toast Notification */
-        @keyframes slideIn {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
         }
 
-        @keyframes slideOut {
-            from {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
+        .modal.show {
+            display: block;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
+        .modal-content {
+            background: var(--card-bg);
+            margin: 20px;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .empty-icon {
-            font-size: 64px;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            opacity: 0.3;
         }
 
-        .empty-text {
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            background: var(--bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .exercise-category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
             font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .exercise-library-item {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .exercise-library-item:active {
+            transform: scale(0.98);
+            border-color: var(--primary);
+        }
+
+        .library-item-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .library-item-desc {
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
-        /* History Card */
         .history-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -647,13 +698,51 @@
             color: var(--success);
             font-size: 12px;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
         <h1>⛳ Golf Speed</h1>
-        <p>8-Week Leg Power Program</p>
+        <p>Custom Workout Builder</p>
     </div>
 
     <!-- Week Progress -->
@@ -672,10 +761,10 @@
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">This Week</div>
+            <div class="stat-label">Workouts Done</div>
             <div>
                 <span class="stat-value" id="workoutsThisWeek">0</span>
-                <span class="stat-unit">/ 4</span>
+                <span class="stat-unit">this week</span>
             </div>
         </div>
     </div>
@@ -708,6 +797,11 @@
                 <h2 class="section-title" id="workoutTitle">Monday Legs</h2>
                 <span class="workout-time" id="workoutTime">50 min</span>
             </div>
+            
+            <button class="add-exercise-btn" onclick="openLibrary()">
+                + Add Exercise
+            </button>
+            
             <div id="exercisesList"></div>
         </div>
 
@@ -722,10 +816,6 @@
                 <button class="timer-btn stop" onclick="stopTimer()">Stop</button>
             </div>
         </div>
-
-        <button class="complete-workout-btn" onclick="completeWorkout()">
-            ✓ Complete Workout
-        </button>
     </div>
 
     <!-- Progress Tab -->
@@ -757,6 +847,17 @@
         </div>
     </div>
 
+    <!-- Exercise Library Modal -->
+    <div class="modal" id="libraryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Exercise Library</div>
+                <div class="close-modal" onclick="closeLibrary()">×</div>
+            </div>
+            <div id="libraryContent"></div>
+        </div>
+    </div>
+
     <!-- Bottom Nav -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('workout')">
@@ -770,180 +871,674 @@
     </div>
 
     <script>
+        // COMPLETE EXERCISE LIBRARY - 40+ Exercises
+        const exerciseLibrary = {
+            // LEGS & PLYOMETRICS
+            legs: {
+                trapBar: {
+                    name: "Trap Bar Deadlift",
+                    category: "Legs",
+                    sets: "5×5 @ 75%",
+                    rest: "2-3 min",
+                    steps: [
+                        "Stand inside trap bar, feet hip-width apart",
+                        "Grip handles, chest up, shoulders back",
+                        "Brace core, take deep breath",
+                        "PUSH through floor like jumping - EXPLODE up",
+                        "Drive with legs, not arms",
+                        "Stand tall, squeeze glutes at top",
+                        "Lower with control - hips back first"
+                    ],
+                    cues: "Push THROUGH floor • Chest up • Weight mid-foot • Explosive up"
+                },
+                singleLegRDL: {
+                    name: "Single-Leg RDL",
+                    category: "Legs",
+                    sets: "Lead: 5×8 | Trail: 4×8",
+                    rest: "90 sec",
+                    steps: [
+                        "Stand on one leg (lead leg)",
+                        "Hold dumbbell in opposite hand",
+                        "Hinge at HIP - push hips back",
+                        "Free leg extends behind you",
+                        "Lower until hamstring stretch",
+                        "Squeeze glute to return up",
+                        "Keep hips square - don't rotate"
+                    ],
+                    cues: "Hinge at hip • Back stays flat • Balance • Lead leg extra set"
+                },
+                boxJumps: {
+                    name: "Box Jumps",
+                    category: "Plyometric",
+                    sets: "3×5",
+                    rest: "2 min",
+                    steps: [
+                        "Stand 6-12 inches from box",
+                        "Swing arms back, slight knee bend",
+                        "Explosively swing arms forward and jump",
+                        "Land softly on entire foot",
+                        "Stand fully upright on box",
+                        "STEP down one foot at a time",
+                        "Never jump down - protects knees"
+                    ],
+                    cues: "Soft landing • STEP down • Quiet = good"
+                },
+                bulgarianSplit: {
+                    name: "Bulgarian Split Squat",
+                    category: "Legs",
+                    sets: "4×8 each leg",
+                    rest: "90 sec",
+                    steps: [
+                        "Back foot elevated on bench (12-18 inches)",
+                        "Front foot 2-3 feet forward",
+                        "Hold dumbbells at sides",
+                        "Lower down until front thigh parallel",
+                        "Keep front knee over ankle",
+                        "Push through front heel to stand",
+                        "Do all reps one leg, then switch"
+                    ],
+                    cues: "Upright torso • Front knee stable • Deep stretch in back leg"
+                },
+                gobletSquat: {
+                    name: "Goblet Squat",
+                    category: "Legs",
+                    sets: "4×10",
+                    rest: "90 sec",
+                    steps: [
+                        "Hold dumbbell or kettlebell at chest",
+                        "Feet shoulder-width, toes slightly out",
+                        "Brace core, chest up",
+                        "Sit back and down between legs",
+                        "Elbows push knees out at bottom",
+                        "Go deep - below parallel if possible",
+                        "Drive through heels to stand"
+                    ],
+                    cues: "Chest up • Knees out • Deep squat • Heels down"
+                },
+                walkingLunges: {
+                    name: "Walking Lunges",
+                    category: "Legs",
+                    sets: "3×10 each leg",
+                    rest: "60 sec",
+                    steps: [
+                        "Stand with dumbbells at sides",
+                        "Step forward into deep lunge",
+                        "Back knee almost touches ground",
+                        "Front knee stays over ankle",
+                        "Push through front heel to stand",
+                        "Bring back foot forward into next lunge",
+                        "Continue walking forward"
+                    ],
+                    cues: "Long steps • Back knee down • Upright torso • Controlled"
+                },
+                stepUps: {
+                    name: "Step-Ups",
+                    category: "Legs",
+                    sets: "4×10 each leg",
+                    rest: "75 sec",
+                    steps: [
+                        "Use 16-20 inch box or bench",
+                        "Hold dumbbells at sides",
+                        "Place entire right foot on box",
+                        "Push through right heel to step up",
+                        "Stand fully on box",
+                        "Step down with control",
+                        "Do all reps one leg, then switch"
+                    ],
+                    cues: "Drive through heel • Full extension • Control descent"
+                },
+                kettlebellSwing: {
+                    name: "Kettlebell Swings",
+                    category: "Plyometric",
+                    sets: "4×15",
+                    rest: "90 sec",
+                    steps: [
+                        "Feet shoulder-width, kettlebell on ground",
+                        "Hinge at hips, grab bell with both hands",
+                        "Hike bell between legs behind you",
+                        "EXPLOSIVELY thrust hips forward",
+                        "Bell floats to shoulder height",
+                        "Let it swing back down between legs",
+                        "Immediately thrust hips again"
+                    ],
+                    cues: "Hip hinge • Explosive thrust • Arms relaxed • Power from hips"
+                },
+                broadJumps: {
+                    name: "Broad Jumps",
+                    category: "Plyometric",
+                    sets: "3×5",
+                    rest: "2 min",
+                    steps: [
+                        "Stand with feet shoulder-width",
+                        "Swing arms back, quarter squat down",
+                        "Explosively swing arms forward and jump",
+                        "Jump as FAR forward as possible",
+                        "Land with soft knees, absorb impact",
+                        "Walk back to start",
+                        "Reset and repeat"
+                    ],
+                    cues: "Jump for distance • Soft landing • Maximum effort"
+                },
+                lateralBounds: {
+                    name: "Lateral Bounds",
+                    category: "Plyometric",
+                    sets: "3×6 each side",
+                    rest: "90 sec",
+                    steps: [
+                        "Stand on right leg only",
+                        "Push off explosively to the LEFT",
+                        "Jump laterally as far as possible",
+                        "Land on left leg only, stick it",
+                        "Pause 1 second for balance",
+                        "Push off left, jump back to right",
+                        "Continue alternating"
+                    ],
+                    cues: "Single leg landing • Stick it • Explosive push • Balance"
+                }
+            },
+            
+            // CORE & STABILITY
+            core: {
+                pallof: {
+                    name: "Pallof Press",
+                    category: "Core",
+                    sets: "3×10 each side",
+                    rest: "60 sec",
+                    steps: [
+                        "Band at chest height, stand sideways",
+                        "Hold band at chest with both hands",
+                        "Brace core HARD",
+                        "Press hands straight out in front",
+                        "RESIST rotation - band tries to pull you",
+                        "Hold 2 seconds extended",
+                        "Return to chest with control"
+                    ],
+                    cues: "Core tight • Resist rotation • Press straight • Hold 2 sec"
+                },
+                medBall: {
+                    name: "Medicine Ball Slams",
+                    category: "Core",
+                    sets: "3×6 each side",
+                    rest: "90 sec",
+                    steps: [
+                        "Stand with ball at chest",
+                        "Rotate right, loading up",
+                        "EXPLOSIVELY rotate and SLAM ball down",
+                        "Use full body, not just arms",
+                        "Catch on bounce",
+                        "Immediately rotate opposite and slam",
+                        "Be AGGRESSIVE - this is violent"
+                    ],
+                    cues: "Full body • Maximum effort • Exhale hard on slam"
+                },
+                mcgillCurlUp: {
+                    name: "Modified Curl-Up",
+                    category: "Core",
+                    sets: "3×8 (10 sec holds)",
+                    rest: "30 sec",
+                    steps: [
+                        "Lie on back, one leg straight, one bent",
+                        "Hands UNDER lower back (preserve arch)",
+                        "Brace core hard",
+                        "Lift head/shoulders 1-2 inches ONLY",
+                        "Hold 10 seconds",
+                        "Lower with control"
+                    ],
+                    cues: "Hands under back • Only 1-2 inches • 10 sec hold"
+                },
+                sidePlank: {
+                    name: "Side Plank",
+                    category: "Core",
+                    sets: "Lead: 3×45s | Trail: 2×30s",
+                    rest: "30 sec",
+                    steps: [
+                        "Lie on side, elbow under shoulder",
+                        "Bottom knee down (modified for age 54)",
+                        "Lift hips creating straight line",
+                        "Keep hips stacked vertically",
+                        "Hold 45 seconds on LEAD side",
+                        "30 seconds on trail side"
+                    ],
+                    cues: "Hips stacked • Don't sag • Breathe normally • Lead side more"
+                },
+                birdDog: {
+                    name: "Bird Dog",
+                    category: "Core",
+                    sets: "3×8 each side (10 sec)",
+                    rest: "30 sec",
+                    steps: [
+                        "Hands and knees position",
+                        "Extend RIGHT arm forward",
+                        "Extend LEFT leg back (opposite!)",
+                        "Keep hips LEVEL - imagine cup of water on back",
+                        "Hold 10 seconds",
+                        "Switch: left arm, right leg"
+                    ],
+                    cues: "Opposite arm/leg • Hips level • No rotation • 10 sec hold"
+                },
+                plank: {
+                    name: "Front Plank",
+                    category: "Core",
+                    sets: "3×45-60 sec",
+                    rest: "60 sec",
+                    steps: [
+                        "Forearms on ground, elbows under shoulders",
+                        "Extend legs, on toes",
+                        "Body in straight line from head to heels",
+                        "Brace core HARD",
+                        "Don't let hips sag or pike up",
+                        "Hold time - breathe normally"
+                    ],
+                    cues: "Straight line • Core tight • No sag • Breathe"
+                }
+            },
+            
+            // ARMS
+            arms: {
+                pullUps: {
+                    name: "Pull-Ups",
+                    category: "Arms/Back",
+                    sets: "4×6-10",
+                    rest: "2 min",
+                    steps: [
+                        "Hang from bar, hands shoulder-width",
+                        "Palms facing away (overhand grip)",
+                        "Engage lats, pull shoulder blades down",
+                        "Pull yourself up until chin over bar",
+                        "Lead with chest, not chin",
+                        "Lower with control to full extension",
+                        "Use band for assistance if needed"
+                    ],
+                    cues: "Full range • Chest to bar • Control down • Lats engaged"
+                },
+                chinUps: {
+                    name: "Chin-Ups",
+                    category: "Arms/Back",
+                    sets: "4×6-10",
+                    rest: "2 min",
+                    steps: [
+                        "Hang from bar, hands shoulder-width",
+                        "Palms facing you (underhand grip)",
+                        "Pull yourself up, chin over bar",
+                        "Biceps do more work than pull-ups",
+                        "Lower with control",
+                        "Full extension at bottom"
+                    ],
+                    cues: "Palms in • Full range • Squeeze biceps • Control"
+                },
+                dumbbellCurls: {
+                    name: "Dumbbell Bicep Curls",
+                    category: "Arms",
+                    sets: "3×10-12",
+                    rest: "60 sec",
+                    steps: [
+                        "Stand with dumbbells at sides",
+                        "Elbows tight to ribs",
+                        "Curl weights up, rotate palms up",
+                        "Squeeze biceps at top",
+                        "Lower with control - 2 second descent",
+                        "Don't swing or use momentum",
+                        "Keep elbows stationary"
+                    ],
+                    cues: "Elbows still • No swing • Squeeze • Control down"
+                },
+                hammerCurls: {
+                    name: "Hammer Curls",
+                    category: "Arms",
+                    sets: "3×10-12",
+                    rest: "60 sec",
+                    steps: [
+                        "Dumbbells at sides, palms facing each other",
+                        "Keep palms facing (neutral grip)",
+                        "Curl weights up",
+                        "Squeeze at top",
+                        "Lower with control",
+                        "Targets brachialis and forearms"
+                    ],
+                    cues: "Neutral grip • Elbows still • Forearms engaged"
+                },
+                tricepDips: {
+                    name: "Tricep Dips",
+                    category: "Arms",
+                    sets: "3×10-15",
+                    rest: "75 sec",
+                    steps: [
+                        "Hands on bench or parallel bars",
+                        "Lower body by bending elbows",
+                        "Go down until elbows at 90 degrees",
+                        "Press back up through hands",
+                        "Keep body close to bench",
+                        "Lean forward slightly for more triceps"
+                    ],
+                    cues: "90° elbows • Close to bench • Press hard • Full extension"
+                },
+                overheadExtension: {
+                    name: "Overhead Tricep Extension",
+                    category: "Arms",
+                    sets: "3×12",
+                    rest: "60 sec",
+                    steps: [
+                        "Hold one dumbbell with both hands overhead",
+                        "Lower weight behind head",
+                        "Keep elbows pointing up (don't flare out)",
+                        "Extend arms to press weight back up",
+                        "Only forearms move - upper arms still",
+                        "Full stretch at bottom, squeeze at top"
+                    ],
+                    cues: "Elbows up • Full stretch • Squeeze triceps • Control"
+                },
+                cableRope: {
+                    name: "Cable Rope Pushdown",
+                    category: "Arms",
+                    sets: "3×12-15",
+                    rest: "60 sec",
+                    steps: [
+                        "Attach rope to high cable pulley",
+                        "Grab rope, elbows at sides",
+                        "Push rope down, split ends at bottom",
+                        "Squeeze triceps hard",
+                        "Let cable pull hands back up with control",
+                        "Keep elbows stationary"
+                    ],
+                    cues: "Split rope • Elbows still • Full extension • Squeeze"
+                }
+            },
+            
+            // SHOULDERS
+            shoulders: {
+                overheadPress: {
+                    name: "Overhead Press",
+                    category: "Shoulders",
+                    sets: "4×8",
+                    rest: "2 min",
+                    steps: [
+                        "Barbell or dumbbells at shoulder height",
+                        "Feet shoulder-width, core braced",
+                        "Press weight straight overhead",
+                        "Lock out arms at top",
+                        "Lower with control to shoulders",
+                        "Don't arch back excessively"
+                    ],
+                    cues: "Straight up • Lockout • Core tight • Control down"
+                },
+                lateralRaise: {
+                    name: "Lateral Raises",
+                    category: "Shoulders",
+                    sets: "3×12-15",
+                    rest: "60 sec",
+                    steps: [
+                        "Dumbbells at sides, slight elbow bend",
+                        "Raise arms out to sides",
+                        "Lead with elbows, not hands",
+                        "Raise to shoulder height",
+                        "Pause at top",
+                        "Lower with control",
+                        "Keep slight forward lean"
+                    ],
+                    cues: "Lead with elbows • Shoulder height • Control • Light weight"
+                },
+                frontRaise: {
+                    name: "Front Raises",
+                    category: "Shoulders",
+                    sets: "3×12",
+                    rest: "60 sec",
+                    steps: [
+                        "Dumbbells in front of thighs",
+                        "Raise weights straight forward",
+                        "Arms nearly straight (slight bend)",
+                        "Raise to shoulder height",
+                        "Lower with control",
+                        "Alternate arms or both together"
+                    ],
+                    cues: "Straight forward • Shoulder height • Control • No swing"
+                },
+                facePulls: {
+                    name: "Face Pulls",
+                    category: "Shoulders",
+                    sets: "3×15-20",
+                    rest: "60 sec",
+                    steps: [
+                        "Rope/handles at face height",
+                        "Stand with slight forward lean",
+                        "Pull to FACE level (not chest)",
+                        "Elbows HIGH and out to sides",
+                        "Squeeze shoulder blades hard",
+                        "Hold 1 second",
+                        "Control return to start"
+                    ],
+                    cues: "Light weight • High elbows • Squeeze shoulder blades"
+                },
+                arnoldPress: {
+                    name: "Arnold Press",
+                    category: "Shoulders",
+                    sets: "3×10",
+                    rest: "90 sec",
+                    steps: [
+                        "Start dumbbells at shoulders, palms facing you",
+                        "Press up while rotating palms forward",
+                        "End with palms facing forward, arms extended",
+                        "Reverse the motion on the way down",
+                        "Rotate palms back to facing you",
+                        "Great for all three deltoid heads"
+                    ],
+                    cues: "Rotate as you press • Full rotation • Control • Smooth"
+                },
+                rearDelt: {
+                    name: "Rear Delt Flyes",
+                    category: "Shoulders",
+                    sets: "3×12-15",
+                    rest: "60 sec",
+                    steps: [
+                        "Bend forward at hips, torso parallel to ground",
+                        "Dumbbells hanging down",
+                        "Raise arms out to sides",
+                        "Lead with elbows, squeeze shoulder blades",
+                        "Raise to torso height",
+                        "Lower with control"
+                    ],
+                    cues: "Torso parallel • Lead with elbows • Squeeze • Light weight"
+                }
+            },
+            
+            // CHEST
+            chest: {
+                benchPress: {
+                    name: "Barbell Bench Press",
+                    category: "Chest",
+                    sets: "4×8",
+                    rest: "2-3 min",
+                    steps: [
+                        "Lie on bench, feet flat on floor",
+                        "Grip bar slightly wider than shoulders",
+                        "Unrack, bar over chest",
+                        "Lower to chest with control",
+                        "Touch chest (don't bounce)",
+                        "Press bar back up powerfully",
+                        "Lock out at top"
+                    ],
+                    cues: "Feet down • Arch back • Touch chest • Drive up"
+                },
+                pushUps: {
+                    name: "Push-Ups",
+                    category: "Chest",
+                    sets: "3×15-20",
+                    rest: "60 sec",
+                    steps: [
+                        "Hands shoulder-width on ground",
+                        "Body in straight line",
+                        "Lower chest to ground",
+                        "Elbows at 45 degrees",
+                        "Push back up to full extension",
+                        "Keep core tight throughout",
+                        "Modify on knees if needed"
+                    ],
+                    cues: "Straight body • Chest to ground • Full extension • Core tight"
+                },
+                dumbbellFlyes: {
+                    name: "Dumbbell Flyes",
+                    category: "Chest",
+                    sets: "3×12",
+                    rest: "75 sec",
+                    steps: [
+                        "Lie on bench, dumbbells pressed up",
+                        "Slight bend in elbows",
+                        "Lower weights out to sides in arc",
+                        "Feel stretch in chest",
+                        "Bring weights back together at top",
+                        "Squeeze chest hard",
+                        "Control throughout - don't drop weights"
+                    ],
+                    cues: "Arc motion • Stretch chest • Squeeze • Control"
+                },
+                inclinePress: {
+                    name: "Incline Press",
+                    category: "Chest",
+                    sets: "4×10",
+                    rest: "2 min",
+                    steps: [
+                        "Bench at 30-45 degree incline",
+                        "Dumbbells or barbell at shoulder height",
+                        "Press straight up (perpendicular to floor)",
+                        "Don't let weights drift forward",
+                        "Lower with control to chest",
+                        "Targets upper chest"
+                    ],
+                    cues: "30-45° angle • Press straight • Upper chest focus"
+                },
+                cableCross: {
+                    name: "Cable Crossovers",
+                    category: "Chest",
+                    sets: "3×15",
+                    rest: "60 sec",
+                    steps: [
+                        "Cables set high, handles in each hand",
+                        "Step forward, slight bend forward",
+                        "Arms extended out to sides",
+                        "Bring hands together in front of chest",
+                        "Squeeze chest hard",
+                        "Return to stretched position with control"
+                    ],
+                    cues: "Arc motion • Squeeze • Stretch • Constant tension"
+                },
+                declinePress: {
+                    name: "Decline Press",
+                    category: "Chest",
+                    sets: "4×10",
+                    rest: "2 min",
+                    steps: [
+                        "Bench at decline (feet elevated)",
+                        "Barbell or dumbbells at chest",
+                        "Press straight up",
+                        "Lower to lower chest",
+                        "Targets lower chest",
+                        "Secure feet properly"
+                    ],
+                    cues: "Decline angle • Lower chest • Press straight • Secure feet"
+                }
+            },
+            
+            // BACK
+            back: {
+                deadlift: {
+                    name: "Conventional Deadlift",
+                    category: "Back",
+                    sets: "5×5",
+                    rest: "3 min",
+                    steps: [
+                        "Bar over mid-foot",
+                        "Grip just outside legs",
+                        "Chest up, shoulders back",
+                        "Push through floor to stand",
+                        "Hips and shoulders rise together",
+                        "Stand fully tall",
+                        "Lower with control - hips back first"
+                    ],
+                    cues: "Chest up • Push floor • Hips/shoulders together • Control"
+                },
+                bentOverRow: {
+                    name: "Bent-Over Barbell Row",
+                    category: "Back",
+                    sets: "4×8",
+                    rest: "90 sec",
+                    steps: [
+                        "Barbell in hands, hinge at hips",
+                        "Torso nearly parallel to ground",
+                        "Pull bar to lower chest/upper abs",
+                        "Lead with elbows",
+                        "Squeeze shoulder blades together",
+                        "Lower with control",
+                        "Keep core braced"
+                    ],
+                    cues: "Parallel torso • Pull to chest • Squeeze • Elbows back"
+                },
+                dumbbellRow: {
+                    name: "Single-Arm Dumbbell Row",
+                    category: "Back",
+                    sets: "4×10 each",
+                    rest: "60 sec",
+                    steps: [
+                        "One hand and knee on bench",
+                        "Dumbbell in other hand hanging down",
+                        "Pull weight to hip",
+                        "Lead with elbow",
+                        "Squeeze lat at top",
+                        "Lower with control",
+                        "Torso stays parallel to ground"
+                    ],
+                    cues: "Pull to hip • Elbow back • Squeeze lat • Torso still"
+                },
+                latPulldown: {
+                    name: "Lat Pulldown",
+                    category: "Back",
+                    sets: "3×12",
+                    rest: "75 sec",
+                    steps: [
+                        "Grip bar wider than shoulders",
+                        "Sit with thighs under pads",
+                        "Pull bar to upper chest",
+                        "Lead with elbows down and back",
+                        "Squeeze lats hard",
+                        "Let bar pull arms back up with control"
+                    ],
+                    cues: "Wide grip • Pull to chest • Elbows down • Squeeze"
+                }
+            }
+        };
+
         // App State
         let state = {
             currentWeek: 1,
             currentDay: 1,
+            customWorkouts: {
+                1: [], // Monday
+                5: [], // Friday
+                6: [], // Saturday
+                0: []  // Sunday
+            },
             completedWorkouts: [],
             progressLogs: [],
             baselineSpeed: 0,
             currentSpeed: 0
         };
 
-        // Exercise Database - LEG/CORE ONLY
-        const exercises = {
-            trapBar: {
-                name: "Trap Bar Deadlift",
-                sets: "5×5 @ 75%",
-                rest: "2-3 min",
-                steps: [
-                    "Stand inside trap bar, feet hip-width apart",
-                    "Grip handles, chest up, shoulders back",
-                    "Brace core, take deep breath",
-                    "PUSH through floor like jumping - EXPLODE up",
-                    "Drive with legs, not arms",
-                    "Stand tall, squeeze glutes at top",
-                    "Lower with control - hips back first"
-                ],
-                cues: "Push THROUGH floor • Chest up • Weight mid-foot • Explosive up"
-            },
-            singleLegRDL: {
-                name: "Single-Leg RDL",
-                sets: "Lead: 5×8 | Trail: 4×8",
-                rest: "90 sec",
-                steps: [
-                    "Stand on one leg (lead leg)",
-                    "Hold dumbbell in opposite hand",
-                    "Hinge at HIP - push hips back",
-                    "Free leg extends behind you",
-                    "Lower until hamstring stretch",
-                    "Squeeze glute to return up",
-                    "Keep hips square - don't rotate"
-                ],
-                cues: "Hinge at hip • Back stays flat • Balance • Lead leg extra set"
-            },
-            boxJumps: {
-                name: "Box Jumps",
-                sets: "3×5",
-                rest: "2 min",
-                steps: [
-                    "Stand 6-12 inches from box",
-                    "Swing arms back, slight knee bend",
-                    "Explosively swing arms forward and jump",
-                    "Land softly on entire foot",
-                    "Stand fully upright on box",
-                    "STEP down one foot at a time",
-                    "Never jump down - protects knees"
-                ],
-                cues: "Soft landing • STEP down • Quiet = good"
-            },
-            pallof: {
-                name: "Pallof Press",
-                sets: "3×10 each side",
-                rest: "60 sec",
-                steps: [
-                    "Band at chest height, stand sideways",
-                    "Hold band at chest with both hands",
-                    "Brace core HARD",
-                    "Press hands straight out in front",
-                    "RESIST rotation - band tries to pull you",
-                    "Hold 2 seconds extended",
-                    "Return to chest with control"
-                ],
-                cues: "Core tight • Resist rotation • Press straight • Hold 2 sec"
-            },
-            medBall: {
-                name: "Medicine Ball Slams",
-                sets: "3×6 each side",
-                rest: "90 sec",
-                steps: [
-                    "Stand with ball at chest",
-                    "Rotate right, loading up",
-                    "EXPLOSIVELY rotate and SLAM ball down",
-                    "Use full body, not just arms",
-                    "Catch on bounce",
-                    "Immediately rotate opposite and slam",
-                    "Be AGGRESSIVE - this is violent"
-                ],
-                cues: "Full body • Maximum effort • Exhale hard on slam"
-            },
-            facePulls: {
-                name: "Face Pulls",
-                sets: "3×15-20",
-                rest: "60 sec",
-                steps: [
-                    "Rope/handles at face height",
-                    "Stand with slight forward lean",
-                    "Pull to FACE level (not chest)",
-                    "Elbows HIGH and out to sides",
-                    "Squeeze shoulder blades hard",
-                    "Hold 1 second",
-                    "Control return to start"
-                ],
-                cues: "Light weight • High elbows • Squeeze shoulder blades"
-            },
-            mcgillCurlUp: {
-                name: "Modified Curl-Up",
-                sets: "3×8 (10 sec holds)",
-                rest: "30 sec",
-                steps: [
-                    "Lie on back, one leg straight, one bent",
-                    "Hands UNDER lower back (preserve arch)",
-                    "Brace core hard",
-                    "Lift head/shoulders 1-2 inches ONLY",
-                    "Hold 10 seconds",
-                    "Lower with control"
-                ],
-                cues: "Hands under back • Only 1-2 inches • 10 sec hold"
-            },
-            sidePlank: {
-                name: "Side Plank",
-                sets: "Lead: 3×45s | Trail: 2×30s",
-                rest: "30 sec",
-                steps: [
-                    "Lie on side, elbow under shoulder",
-                    "Bottom knee down (modified for age 54)",
-                    "Lift hips creating straight line",
-                    "Keep hips stacked vertically",
-                    "Hold 45 seconds on LEAD side",
-                    "30 seconds on trail side"
-                ],
-                cues: "Hips stacked • Don't sag • Breathe normally • Lead side more"
-            },
-            birdDog: {
-                name: "Bird Dog",
-                sets: "3×8 each side (10 sec)",
-                rest: "30 sec",
-                steps: [
-                    "Hands and knees position",
-                    "Extend RIGHT arm forward",
-                    "Extend LEFT leg back (opposite!)",
-                    "Keep hips LEVEL - imagine cup of water on back",
-                    "Hold 10 seconds",
-                    "Switch: left arm, right leg"
-                ],
-                cues: "Opposite arm/leg • Hips level • No rotation • 10 sec hold"
-            }
-        };
-
-        // Workouts by day
-        const workouts = {
-            1: { // Monday
-                title: "Monday Legs",
-                time: "50 min",
-                exercises: ['trapBar', 'singleLegRDL', 'boxJumps', 'pallof', 'medBall', 'facePulls']
-            },
-            5: { // Friday
-                title: "Friday Legs",
-                time: "50 min",
-                exercises: ['trapBar', 'singleLegRDL', 'boxJumps', 'pallof', 'medBall', 'facePulls']
-            },
-            6: { // Saturday
-                title: "Your Arms/Shoulders",
-                time: "45-60 min",
-                custom: "Do your normal arms and shoulders routine"
-            },
-            0: { // Sunday
-                title: "Your Chest + Recovery",
-                time: "60 min",
-                exercises: ['mcgillCurlUp', 'sidePlank', 'birdDog'],
-                custom: "Do your chest routine, then McGill Big 3"
-            }
+        // Default workouts
+        const defaultWorkouts = {
+            1: ['trapBar', 'singleLegRDL', 'boxJumps', 'pallof', 'medBall', 'facePulls'],
+            5: ['trapBar', 'singleLegRDL', 'boxJumps', 'pallof', 'medBall', 'facePulls'],
+            6: [],
+            0: ['mcgillCurlUp', 'sidePlank', 'birdDog']
         };
 
         // Initialize
         function init() {
             loadState();
+            
+            // Set default workouts if custom workouts are empty
+            if (state.customWorkouts[1].length === 0) {
+                state.customWorkouts = {...defaultWorkouts};
+                saveState();
+            }
+            
             generateWeekSelector();
             loadDay(state.currentDay);
             updateStats();
@@ -952,15 +1547,16 @@
 
         // Load state
         function loadState() {
-            const saved = localStorage.getItem('golfSpeed');
+            const saved = localStorage.getItem('golfSpeedV3');
             if (saved) {
-                state = { ...state, ...JSON.parse(saved) };
+                const loaded = JSON.parse(saved);
+                state = {...state, ...loaded};
             }
         }
 
         // Save state
         function saveState() {
-            localStorage.setItem('golfSpeed', JSON.stringify(state));
+            localStorage.setItem('golfSpeedV3', JSON.stringify(state));
         }
 
         // Week selector
@@ -986,78 +1582,131 @@
             saveState();
             generateWeekSelector();
             updateStats();
+            
+            if (week === 0) {
+                showBaselineTesting();
+            }
+        }
+
+        // Show baseline testing
+        function showBaselineTesting() {
+            const container = document.getElementById('exercisesList');
+            container.innerHTML = `
+                <div class="exercise-card">
+                    <div style="padding: 10px;">
+                        <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 18px;">📋 Week 0: Baseline Testing</h3>
+                        <p style="margin-bottom: 20px; color: var(--text-secondary);">Complete these tests BEFORE starting Week 1</p>
+                        
+                        <div style="background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">1. Speed Baseline (Range)</h4>
+                            <ul style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+                                <li>Hit 10 drivers at comfortable speed</li>
+                                <li>Measure ALL swings with radar</li>
+                                <li>Record average speed in Progress tab</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">2. Distance Baseline (Range)</h4>
+                            <ul style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+                                <li>Same 10 swings as above</li>
+                                <li>Record carry distance</li>
+                                <li>Note average in Progress tab</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">3. Strength Baseline (Gym)</h4>
+                            <ul style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+                                <li>Find trap bar deadlift 5RM (5-rep max)</li>
+                                <li>Hire trainer for 1 session if needed</li>
+                                <li>Record weight in Progress tab</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: var(--bg); padding: 15px; border-radius: 12px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">4. Ready to Start?</h4>
+                            <p style="color: var(--text-secondary); margin-bottom: 10px;">Once baseline tests complete:</p>
+                            <ul style="margin-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+                                <li>Go to Progress tab</li>
+                                <li>Enter all baseline numbers</li>
+                                <li>Click Week 1 above</li>
+                                <li>Start training!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // Load day
-        function loadDay(day, element) {
+        function loadDay(day) {
             state.currentDay = day;
             
             // Update tab active states
-            document.querySelectorAll('.day-tab').forEach((tab, i) => {
-                tab.classList.remove('active');
-            });
-            
-            // Set active state based on day
             const dayTabs = document.querySelectorAll('.day-tab');
+            dayTabs.forEach(tab => tab.classList.remove('active'));
             if (day === 1) dayTabs[0]?.classList.add('active');
             else if (day === 5) dayTabs[1]?.classList.add('active');
             else if (day === 6) dayTabs[2]?.classList.add('active');
             else if (day === 0) dayTabs[3]?.classList.add('active');
 
-            const workout = workouts[day];
-            document.getElementById('workoutTitle').textContent = workout.title;
-            document.getElementById('workoutTime').textContent = workout.time;
+            // Update title
+            const titles = {
+                1: 'Monday Legs',
+                5: 'Friday Legs',
+                6: 'Saturday Upper',
+                0: 'Sunday Upper'
+            };
+            document.getElementById('workoutTitle').textContent = titles[day];
+            document.getElementById('workoutTime').textContent = '50 min';
 
+            renderExercises();
+        }
+
+        // Render exercises
+        function renderExercises() {
             const container = document.getElementById('exercisesList');
+            const exercises = state.customWorkouts[state.currentDay] || [];
             
-            if (workout.custom) {
-                container.innerHTML = `
-                    <div class="exercise-card">
-                        <div style="text-align: center; padding: 20px;">
-                            <div style="font-size: 48px; margin-bottom: 15px;">💪</div>
-                            <h3 style="margin-bottom: 10px;">${workout.custom}</h3>
-                            <p style="color: var(--text-secondary); font-size: 14px;">
-                                ${day === 0 ? 'After chest, do the McGill Big 3 below for back protection' : 'Your regular routine'}
-                            </p>
-                        </div>
-                    </div>
-                `;
-
-                if (day === 0) {
-                    // Add McGill Big 3
-                    workout.exercises.forEach((key, i) => {
-                        const ex = exercises[key];
-                        container.innerHTML += createExerciseCard(ex, i + 1, key);
-                    });
+            let html = '';
+            exercises.forEach((exKey, index) => {
+                const ex = getExercise(exKey);
+                if (ex) {
+                    html += createExerciseCard(ex, index + 1, exKey);
                 }
-            } else {
-                let html = '';
-                workout.exercises.forEach((key, i) => {
-                    const ex = exercises[key];
-                    // Skip box jumps for weeks 1-4
-                    if (key === 'boxJumps' && state.currentWeek < 5) return;
-                    html += createExerciseCard(ex, i + 1, key);
-                });
-                container.innerHTML = html;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Get exercise from library
+        function getExercise(key) {
+            for (let category in exerciseLibrary) {
+                if (exerciseLibrary[category][key]) {
+                    return exerciseLibrary[category][key];
+                }
             }
+            return null;
         }
 
         // Create exercise card
         function createExerciseCard(ex, num, key) {
             return `
-                <div class="exercise-card" id="card-${key}">
+                <div class="exercise-card" id="card-${key}-${num}">
+                    <div class="remove-exercise" onclick="removeExercise('${key}')">×</div>
                     <div class="exercise-header">
                         <div class="exercise-number">${num}</div>
                         <div class="exercise-info">
                             <div class="exercise-name">${ex.name}</div>
                             <div class="exercise-sets">${ex.sets} • ${ex.rest}</div>
                         </div>
-                        <div class="expand-btn" onclick="toggleExercise('${key}')">
-                            <span id="icon-${key}">▼</span>
+                        <div class="expand-btn" onclick="toggleExercise('${key}-${num}')">
+                            <span id="icon-${key}-${num}">▼</span>
                         </div>
                     </div>
                     
-                    <div class="exercise-details" id="details-${key}">
+                    <div class="exercise-details" id="details-${key}-${num}">
                         <div class="steps-list">
                             ${ex.steps.map((step, i) => `
                                 <div class="step">
@@ -1073,10 +1722,10 @@
                         </div>
 
                         <div class="action-btns">
-                            <button class="btn btn-success" onclick="markComplete('${key}')">
+                            <button class="btn btn-success" onclick="markComplete('${key}-${num}')">
                                 ✓ Done
                             </button>
-                            <button class="btn btn-secondary" onclick="toggleExercise('${key}')">
+                            <button class="btn btn-secondary" onclick="toggleExercise('${key}-${num}')">
                                 Close
                             </button>
                         </div>
@@ -1086,9 +1735,9 @@
         }
 
         // Toggle exercise
-        function toggleExercise(key) {
-            const details = document.getElementById(`details-${key}`);
-            const icon = document.getElementById(`icon-${key}`);
+        function toggleExercise(id) {
+            const details = document.getElementById(`details-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
             
             if (details.classList.contains('show')) {
                 details.classList.remove('show');
@@ -1101,23 +1750,118 @@
         }
 
         // Mark complete
-        function markComplete(key) {
-            const card = document.getElementById(`card-${key}`);
-            card.classList.add('completed');
-            toggleExercise(key);
-            showToast('💪 Great work!');
+        function markComplete(id) {
+            const card = document.getElementById(`card-${id}`);
+            if (card) {
+                card.classList.add('completed');
+                toggleExercise(id);
+                showToast('💪 Great work!');
+                
+                // Check if all done
+                setTimeout(checkAllComplete, 500);
+            }
+        }
+
+        // Check if all exercises complete
+        function checkAllComplete() {
+            const allCards = document.querySelectorAll('.exercise-card');
+            const completedCards = document.querySelectorAll('.exercise-card.completed');
+            
+            if (allCards.length > 0 && allCards.length === completedCards.length) {
+                completeWorkout();
+            }
         }
 
         // Complete workout
         function completeWorkout() {
+            const today = new Date().toISOString().split('T')[0];
+            const alreadyLogged = state.completedWorkouts.some(w => 
+                w.date === today && w.day === state.currentDay
+            );
+            
+            if (alreadyLogged) return;
+            
             state.completedWorkouts.push({
-                date: new Date().toISOString().split('T')[0],
+                date: today,
                 week: state.currentWeek,
                 day: state.currentDay
             });
             saveState();
             updateStats();
-            showToast('🎉 Workout completed!');
+            showToast('🎉 Workout logged!');
+        }
+
+        // Remove exercise
+        function removeExercise(key) {
+            const dayExercises = state.customWorkouts[state.currentDay];
+            const index = dayExercises.indexOf(key);
+            if (index > -1) {
+                dayExercises.splice(index, 1);
+                saveState();
+                renderExercises();
+                showToast('Exercise removed');
+            }
+        }
+
+        // Open library
+        function openLibrary() {
+            const modal = document.getElementById('libraryModal');
+            const content = document.getElementById('libraryContent');
+            
+            let html = '';
+            
+            const categories = {
+                legs: 'Legs & Plyometrics',
+                core: 'Core & Stability',
+                arms: 'Arms & Biceps/Triceps',
+                shoulders: 'Shoulders',
+                chest: 'Chest',
+                back: 'Back'
+            };
+            
+            for (let catKey in categories) {
+                html += `
+                    <div class="exercise-category">
+                        <div class="category-title">${categories[catKey]}</div>
+                `;
+                
+                for (let exKey in exerciseLibrary[catKey]) {
+                    const ex = exerciseLibrary[catKey][exKey];
+                    html += `
+                        <div class="exercise-library-item" onclick="addExercise('${exKey}')">
+                            <div class="library-item-name">${ex.name}</div>
+                            <div class="library-item-desc">${ex.sets}</div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            }
+            
+            content.innerHTML = html;
+            modal.classList.add('show');
+        }
+
+        // Close library
+        function closeLibrary() {
+            document.getElementById('libraryModal').classList.remove('show');
+        }
+
+        // Add exercise
+        function addExercise(key) {
+            const dayExercises = state.customWorkouts[state.currentDay];
+            
+            // Check if already added
+            if (dayExercises.includes(key)) {
+                showToast('⚠️ Already in workout');
+                return;
+            }
+            
+            dayExercises.push(key);
+            saveState();
+            renderExercises();
+            closeLibrary();
+            showToast('✅ Exercise added!');
         }
 
         // Update stats
@@ -1160,7 +1904,6 @@
             loadHistory();
             showToast('✅ Progress saved!');
             
-            // Clear inputs
             document.getElementById('speedInput').value = '';
             document.getElementById('distanceInput').value = '';
             document.getElementById('deadliftInput').value = '';
@@ -1233,7 +1976,7 @@
             }
         }
 
-        // Timer
+        // Timer functions
         let timerInterval = null;
         let timeLeft = 0;
 
