@@ -782,19 +782,19 @@
         <!-- Day Tabs -->
         <div class="day-tabs">
             <div class="day-tab active" onclick="loadDay(1)">
-                <div class="day-label">LEG DAY</div>
+                <div class="day-label" contenteditable="true" onclick="event.stopPropagation()" onblur="saveDayLabel(1, this.textContent)" id="label-1">LEG DAY</div>
                 <div class="day-name">Monday</div>
             </div>
             <div class="day-tab" onclick="loadDay(5)">
-                <div class="day-label">LEG DAY</div>
+                <div class="day-label" contenteditable="true" onclick="event.stopPropagation()" onblur="saveDayLabel(5, this.textContent)" id="label-5">LEG DAY</div>
                 <div class="day-name">Friday</div>
             </div>
             <div class="day-tab" onclick="loadDay(6)">
-                <div class="day-label">UPPER</div>
+                <div class="day-label" contenteditable="true" onclick="event.stopPropagation()" onblur="saveDayLabel(6, this.textContent)" id="label-6">UPPER</div>
                 <div class="day-name">Saturday</div>
             </div>
             <div class="day-tab" onclick="loadDay(0)">
-                <div class="day-label">UPPER</div>
+                <div class="day-label" contenteditable="true" onclick="event.stopPropagation()" onblur="saveDayLabel(0, this.textContent)" id="label-0">UPPER</div>
                 <div class="day-name">Sunday</div>
             </div>
         </div>
@@ -837,8 +837,8 @@
             </div>
 
             <div class="input-group">
-                <label class="input-label">Carry Distance (yards)</label>
-                <input type="number" class="input-field" id="distanceInput" placeholder="250">
+                <label class="input-label">Broad Jump Distance (feet)</label>
+                <input type="number" step="0.1" class="input-field" id="broadJumpInput" placeholder="8.5">
             </div>
 
             <div class="input-group">
@@ -862,7 +862,64 @@
                 <div class="modal-title">Exercise Library</div>
                 <div class="close-modal" onclick="closeLibrary()">×</div>
             </div>
+            
+            <button class="btn btn-primary" onclick="showCustomExerciseForm()" style="width: 100%; margin-bottom: 20px;">
+                ➕ Create Custom Exercise
+            </button>
+            
             <div id="libraryContent"></div>
+        </div>
+    </div>
+
+    <!-- Custom Exercise Modal -->
+    <div class="modal" id="customExerciseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create Custom Exercise</div>
+                <div class="close-modal" onclick="closeCustomExercise()">×</div>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Exercise Name</label>
+                <input type="text" class="input-field" id="customName" placeholder="e.g., Farmer's Carry">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Sets x Reps</label>
+                <input type="text" class="input-field" id="customSets" placeholder="e.g., 3×10 or 4×8">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Rest Time</label>
+                <input type="text" class="input-field" id="customRest" placeholder="e.g., 90 sec or 2 min">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Category</label>
+                <select class="input-field" id="customCategory">
+                    <option value="legs">Legs & Plyometrics</option>
+                    <option value="core">Core & Stability</option>
+                    <option value="arms">Arms</option>
+                    <option value="shoulders">Shoulders</option>
+                    <option value="chest">Chest</option>
+                    <option value="back">Back</option>
+                    <option value="cardio">Cardio</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Instructions (one per line)</label>
+                <textarea class="input-field" id="customInstructions" rows="6" placeholder="Step 1: Setup&#10;Step 2: Execute&#10;Step 3: Return" style="font-family: inherit; resize: vertical;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Key Cues (separated by •)</label>
+                <input type="text" class="input-field" id="customCues" placeholder="e.g., Keep core tight • Control descent • Full extension">
+            </div>
+
+            <button class="btn btn-success" onclick="saveCustomExercise()" style="width: 100%;">
+                ✅ Save Custom Exercise
+            </button>
         </div>
     </div>
 
@@ -1509,6 +1566,335 @@
                         "Let bar pull arms back up with control"
                     ],
                     cues: "Wide grip • Pull to chest • Elbows down • Squeeze"
+                },
+                cableRow: {
+                    name: "Seated Cable Row",
+                    category: "Back",
+                    sets: "3×12",
+                    rest: "75 sec",
+                    steps: [
+                        "Sit at cable machine, feet on platform",
+                        "Grab handle, arms extended",
+                        "Pull handle to lower chest",
+                        "Elbows stay close to body",
+                        "Squeeze shoulder blades",
+                        "Extend arms with control"
+                    ],
+                    cues: "Upright torso • Pull to chest • Squeeze • Control"
+                },
+                tbarRow: {
+                    name: "T-Bar Row",
+                    category: "Back",
+                    sets: "4×10",
+                    rest: "90 sec",
+                    steps: [
+                        "Straddle T-bar, feet shoulder-width",
+                        "Hinge at hips, grab handles",
+                        "Pull weight to chest",
+                        "Elbows back and up",
+                        "Squeeze lats and middle back",
+                        "Lower with control"
+                    ],
+                    cues: "Hinge • Pull high • Elbows up • Squeeze"
+                }
+            },
+            
+            // CARDIO
+            cardio: {
+                rowing: {
+                    name: "Rowing Machine",
+                    category: "Cardio",
+                    sets: "20 min steady or intervals",
+                    rest: "N/A",
+                    steps: [
+                        "Strap feet into foot plates",
+                        "Grab handle with overhand grip",
+                        "Start with legs - push back",
+                        "Lean back slightly as legs extend",
+                        "Pull handle to lower chest",
+                        "Reverse: arms out, lean forward, bend knees",
+                        "Smooth rhythm: legs, body, arms"
+                    ],
+                    cues: "Legs first • Lean • Pull • Smooth rhythm • Power from legs"
+                },
+                assault: {
+                    name: "Assault Bike",
+                    category: "Cardio",
+                    sets: "Intervals or steady",
+                    rest: "Varies",
+                    steps: [
+                        "Adjust seat height",
+                        "Grab moving handles",
+                        "Push/pull handles while pedaling",
+                        "Full body effort",
+                        "Interval: 30 sec max, 30 sec easy",
+                        "Or steady pace 10-20 min"
+                    ],
+                    cues: "Full body • Max effort intervals • Breathe hard"
+                },
+                skiErg: {
+                    name: "Ski Erg",
+                    category: "Cardio",
+                    sets: "Intervals or steady",
+                    rest: "Varies",
+                    steps: [
+                        "Stand facing machine",
+                        "Grab handles overhead",
+                        "Pull down explosively using core and lats",
+                        "Crouch slightly as you pull",
+                        "Return handles overhead with control",
+                        "Repeat for time or calories"
+                    ],
+                    cues: "Explosive pull • Core tight • Full range • Rhythm"
+                },
+                sled: {
+                    name: "Sled Push",
+                    category: "Cardio",
+                    sets: "6-10 x 40 yards",
+                    rest: "90 sec",
+                    steps: [
+                        "Load sled with plates",
+                        "Hands on high handles",
+                        "Lean forward into sled",
+                        "Drive with legs, powerful strides",
+                        "Stay low, push through entire foot",
+                        "Sprint to finish line"
+                    ],
+                    cues: "Lean in • Powerful strides • Drive legs • Low position"
+                },
+                sledPull: {
+                    name: "Sled Pull",
+                    category: "Cardio",
+                    sets: "6 x 40 yards",
+                    rest: "90 sec",
+                    steps: [
+                        "Attach rope to sled",
+                        "Walk backward pulling sled",
+                        "Keep tension on rope",
+                        "Strong leg drive backward",
+                        "Or: drag sled forward by pulling rope hand-over-hand"
+                    ],
+                    cues: "Constant tension • Powerful steps • Stay low"
+                },
+                battleRopes: {
+                    name: "Battle Ropes",
+                    category: "Cardio",
+                    sets: "6 x 30 sec",
+                    rest: "30 sec",
+                    steps: [
+                        "Grab rope ends, one in each hand",
+                        "Slight squat position",
+                        "Alternating waves: raise and slam down",
+                        "Or both arms together",
+                        "Maximum intensity for time",
+                        "Keep core braced"
+                    ],
+                    cues: "Max effort • Alternating or together • Core tight • Breathe"
+                },
+                sprints: {
+                    name: "Hill Sprints",
+                    category: "Cardio",
+                    sets: "8-10 x 40 yards",
+                    rest: "Walk down",
+                    steps: [
+                        "Find moderate hill or incline",
+                        "Sprint up at 90% max effort",
+                        "Powerful arm drive",
+                        "High knees",
+                        "Walk down for recovery",
+                        "Repeat"
+                    ],
+                    cues: "90% effort • Powerful • High knees • Full recovery"
+                },
+                burpees: {
+                    name: "Burpees",
+                    category: "Cardio",
+                    sets: "5 x 10",
+                    rest: "60 sec",
+                    steps: [
+                        "Stand, drop to pushup position",
+                        "Do one pushup",
+                        "Jump feet to hands",
+                        "Explode up into jump",
+                        "Clap hands overhead",
+                        "Repeat for reps"
+                    ],
+                    cues: "Explosive • Full pushup • High jump • Fast pace"
+                },
+                jumpRope: {
+                    name: "Jump Rope",
+                    category: "Cardio",
+                    sets: "10 min or intervals",
+                    rest: "Varies",
+                    steps: [
+                        "Rope handles in each hand",
+                        "Small wrist circles to swing rope",
+                        "Jump on balls of feet",
+                        "Small bounces - just clear rope",
+                        "Interval: 1 min fast, 30 sec slow",
+                        "Or steady pace"
+                    ],
+                    cues: "Small jumps • Wrist motion • Stay light • Rhythm"
+                }
+            },
+            
+            // OLYMPIC LIFTS
+            olympic: {
+                powerClean: {
+                    name: "Power Clean",
+                    category: "Olympic",
+                    sets: "5×3",
+                    rest: "2-3 min",
+                    steps: [
+                        "Bar over mid-foot, grip shoulder-width",
+                        "First pull: bar to knees (like deadlift)",
+                        "Second pull: EXPLOSIVE jump and shrug",
+                        "Pull yourself under bar",
+                        "Catch in quarter squat, bar on shoulders",
+                        "Stand up fully",
+                        "Lower to ground with control"
+                    ],
+                    cues: "Explosive second pull • Fast elbows • Catch in squat • Athletic"
+                },
+                hangClean: {
+                    name: "Hang Clean",
+                    category: "Olympic",
+                    sets: "5×3",
+                    rest: "2-3 min",
+                    steps: [
+                        "Start with bar at mid-thigh",
+                        "Slight knee bend",
+                        "EXPLOSIVE jump and shrug",
+                        "Pull under bar quickly",
+                        "Catch on shoulders in quarter squat",
+                        "Stand up"
+                    ],
+                    cues: "Explosive • Fast elbows • Athletic catch • Power"
+                },
+                snatch: {
+                    name: "Power Snatch",
+                    category: "Olympic",
+                    sets: "5×2",
+                    rest: "2-3 min",
+                    steps: [
+                        "Wide grip on bar",
+                        "Pull bar to hips explosively",
+                        "Jump and shrug",
+                        "Pull yourself under",
+                        "Catch overhead in quarter squat",
+                        "Lock out arms, stand up",
+                        "Lower to ground"
+                    ],
+                    cues: "Wide grip • Explosive • Fast under • Lock out • Control"
+                },
+                pushPress: {
+                    name: "Push Press",
+                    category: "Olympic",
+                    sets: "4×6",
+                    rest: "2 min",
+                    steps: [
+                        "Bar on front shoulders",
+                        "Dip knees slightly",
+                        "Drive up explosively with legs",
+                        "Press bar overhead as you stand",
+                        "Lock out arms at top",
+                        "Lower to shoulders"
+                    ],
+                    cues: "Small dip • Explosive drive • Press as you stand • Lockout"
+                },
+                pushJerk: {
+                    name: "Push Jerk",
+                    category: "Olympic",
+                    sets: "5×3",
+                    rest: "2-3 min",
+                    steps: [
+                        "Bar on front shoulders",
+                        "Dip and drive explosively",
+                        "Press bar overhead",
+                        "Drop into quarter squat as bar goes up",
+                        "Catch with locked arms",
+                        "Stand fully upright"
+                    ],
+                    cues: "Dip-drive • Drop under • Lock arms • Stand"
+                }
+            },
+            
+            // FUNCTIONAL
+            functional: {
+                farmersCarry: {
+                    name: "Farmer's Carry",
+                    category: "Functional",
+                    sets: "4 x 40 yards",
+                    rest: "90 sec",
+                    steps: [
+                        "Heavy dumbbells or kettlebells in each hand",
+                        "Stand tall, shoulders back",
+                        "Walk forward with normal stride",
+                        "Keep core braced",
+                        "Don't let shoulders sag forward",
+                        "Walk prescribed distance"
+                    ],
+                    cues: "Tall posture • Heavy weight • Brace core • Normal stride"
+                },
+                turkishGetUp: {
+                    name: "Turkish Get-Up",
+                    category: "Functional",
+                    sets: "3 each side",
+                    rest: "60 sec",
+                    steps: [
+                        "Lie on back, kettlebell in right hand overhead",
+                        "Bend right knee, foot flat",
+                        "Roll onto left elbow, then left hand",
+                        "Lift hips, thread left leg back",
+                        "Come to kneeling position",
+                        "Stand up while keeping bell overhead",
+                        "Reverse all steps to return to ground"
+                    ],
+                    cues: "Slow and controlled • Eyes on bell • Stable overhead"
+                },
+                sandbagCarry: {
+                    name: "Sandbag Carry",
+                    category: "Functional",
+                    sets: "5 x 50 yards",
+                    rest: "90 sec",
+                    steps: [
+                        "Bear hug sandbag at chest",
+                        "Or hold on shoulder",
+                        "Walk forward maintaining posture",
+                        "Keep core tight",
+                        "Breathe steadily"
+                    ],
+                    cues: "Tight grip • Upright • Core braced • Controlled breathing"
+                },
+                sledHammer: {
+                    name: "Sledgehammer Slams",
+                    category: "Functional",
+                    sets: "3 x 20",
+                    rest: "75 sec",
+                    steps: [
+                        "Large tire and sledgehammer",
+                        "Swing hammer overhead",
+                        "Slam down onto tire",
+                        "Use full body rotation",
+                        "Alternate sides for rotational power",
+                        "Maximum effort on each slam"
+                    ],
+                    cues: "Full rotation • Max effort • Alternate sides • Explosive"
+                },
+                wallBalls: {
+                    name: "Wall Balls",
+                    category: "Functional",
+                    sets: "4 x 15",
+                    rest: "75 sec",
+                    steps: [
+                        "Hold medicine ball at chest",
+                        "Squat down to parallel or below",
+                        "Explode up and throw ball to target on wall (10 feet high)",
+                        "Catch ball on descent",
+                        "Immediately squat again",
+                        "Continuous motion"
+                    ],
+                    cues: "Deep squat • Explosive throw • Catch • Continuous • Breathe"
                 }
             }
         };
@@ -1517,12 +1903,19 @@
         let state = {
             currentWeek: 1,
             currentDay: 1,
+            dayLabels: {
+                1: 'LEG DAY',
+                5: 'LEG DAY',
+                6: 'UPPER',
+                0: 'UPPER'
+            },
             customWorkouts: {
                 1: [], // Monday
                 5: [], // Friday
                 6: [], // Saturday
                 0: []  // Sunday
             },
+            customExercises: {}, // User-created exercises
             completedWorkouts: [],
             progressLogs: [],
             baselineSpeed: 0,
@@ -1545,6 +1938,14 @@
             if (state.customWorkouts[1].length === 0) {
                 state.customWorkouts = {...defaultWorkouts};
                 saveState();
+            }
+            
+            // Load custom day labels
+            if (state.dayLabels) {
+                document.getElementById('label-1').textContent = state.dayLabels[1] || 'LEG DAY';
+                document.getElementById('label-5').textContent = state.dayLabels[5] || 'LEG DAY';
+                document.getElementById('label-6').textContent = state.dayLabels[6] || 'UPPER';
+                document.getElementById('label-0').textContent = state.dayLabels[0] || 'UPPER';
             }
             
             generateWeekSelector();
@@ -1970,7 +2371,257 @@
             container.innerHTML = html;
         }
 
-        // Switch tabs
+        // Save day label
+        function saveDayLabel(day, text) {
+            state.dayLabels[day] = text.toUpperCase();
+            saveState();
+        }
+
+        // Show custom exercise form
+        function showCustomExerciseForm() {
+            closeLibrary();
+            document.getElementById('customExerciseModal').classList.add('show');
+        }
+
+        // Close custom exercise form
+        function closeCustomExercise() {
+            document.getElementById('customExerciseModal').classList.remove('show');
+            // Clear form
+            document.getElementById('customName').value = '';
+            document.getElementById('customSets').value = '';
+            document.getElementById('customRest').value = '';
+            document.getElementById('customInstructions').value = '';
+            document.getElementById('customCues').value = '';
+        }
+
+        // Save custom exercise
+        function saveCustomExercise() {
+            const name = document.getElementById('customName').value.trim();
+            const sets = document.getElementById('customSets').value.trim();
+            const rest = document.getElementById('customRest').value.trim();
+            const category = document.getElementById('customCategory').value;
+            const instructions = document.getElementById('customInstructions').value.trim();
+            const cues = document.getElementById('customCues').value.trim();
+
+            if (!name || !sets || !rest) {
+                showToast('⚠️ Fill in name, sets, and rest time');
+                return;
+            }
+
+            // Create unique key
+            const key = 'custom_' + Date.now();
+            
+            // Parse instructions (one per line)
+            const steps = instructions.split('\n').filter(line => line.trim());
+            if (steps.length === 0) {
+                steps.push('Perform exercise as prescribed');
+            }
+
+            // Create exercise object
+            const exercise = {
+                name: name,
+                category: category,
+                sets: sets,
+                rest: rest,
+                steps: steps,
+                cues: cues || 'Maintain form • Control movement • Full range'
+            };
+
+            // Add to library
+            if (!exerciseLibrary[category]) {
+                exerciseLibrary[category] = {};
+            }
+            exerciseLibrary[category][key] = exercise;
+            
+            // Also save in state for persistence
+            if (!state.customExercises) {
+                state.customExercises = {};
+            }
+            state.customExercises[key] = exercise;
+            
+            saveState();
+            closeCustomExercise();
+            showToast('✅ Custom exercise created!');
+            
+            // Auto-add to current day's workout
+            addExercise(key);
+        }
+
+        // Get exercise from library (including custom)
+        function getExercise(key) {
+            // First check custom exercises
+            if (state.customExercises && state.customExercises[key]) {
+                return state.customExercises[key];
+            }
+            
+            // Then check library
+            for (let category in exerciseLibrary) {
+                if (exerciseLibrary[category][key]) {
+                    return exerciseLibrary[category][key];
+                }
+            }
+            return null;
+        }
+
+        // Load state (updated to restore custom exercises)
+        function loadState() {
+            const saved = localStorage.getItem('golfSpeedV3');
+            if (saved) {
+                const loaded = JSON.parse(saved);
+                state = {...state, ...loaded};
+                
+                // Restore custom exercises to library
+                if (state.customExercises) {
+                    for (let key in state.customExercises) {
+                        const ex = state.customExercises[key];
+                        const category = ex.category || 'functional';
+                        if (!exerciseLibrary[category]) {
+                            exerciseLibrary[category] = {};
+                        }
+                        exerciseLibrary[category][key] = ex;
+                    }
+                }
+            }
+        }
+
+        // Open library (updated to include custom exercises and all categories)
+        function openLibrary() {
+            const modal = document.getElementById('libraryModal');
+            const content = document.getElementById('libraryContent');
+            
+            let html = '';
+            
+            const categories = {
+                legs: 'Legs & Plyometrics',
+                core: 'Core & Stability',
+                arms: 'Arms & Biceps/Triceps',
+                shoulders: 'Shoulders',
+                chest: 'Chest',
+                back: 'Back',
+                cardio: 'Cardio',
+                olympic: 'Olympic Lifts',
+                functional: 'Functional'
+            };
+            
+            for (let catKey in categories) {
+                if (!exerciseLibrary[catKey]) continue;
+                
+                html += `
+                    <div class="exercise-category">
+                        <div class="category-title">${categories[catKey]}</div>
+                `;
+                
+                for (let exKey in exerciseLibrary[catKey]) {
+                    const ex = exerciseLibrary[catKey][exKey];
+                    html += `
+                        <div class="exercise-library-item" onclick="addExercise('${exKey}')">
+                            <div class="library-item-name">${ex.name}${exKey.startsWith('custom_') ? ' ⭐' : ''}</div>
+                            <div class="library-item-desc">${ex.sets}</div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            }
+            
+            content.innerHTML = html;
+            modal.classList.add('show');
+        }
+
+        // Save progress (updated for broad jump)
+        function saveProgress() {
+            const speed = parseFloat(document.getElementById('speedInput').value);
+            const broadJump = parseFloat(document.getElementById('broadJumpInput').value);
+            const deadlift = parseFloat(document.getElementById('deadliftInput').value);
+
+            if (!speed && !broadJump && !deadlift) {
+                showToast('⚠️ Enter at least one value');
+                return;
+            }
+
+            const entry = {
+                date: new Date().toISOString().split('T')[0],
+                week: state.currentWeek,
+                speed: speed || state.currentSpeed,
+                broadJump: broadJump || 0,
+                deadlift: deadlift || 0
+            };
+
+            state.progressLogs.push(entry);
+            
+            if (speed) {
+                state.currentSpeed = speed;
+                if (state.baselineSpeed === 0) state.baselineSpeed = speed;
+            }
+
+            saveState();
+            updateStats();
+            loadHistory();
+            showToast('✅ Progress saved!');
+            
+            document.getElementById('speedInput').value = '';
+            document.getElementById('broadJumpInput').value = '';
+            document.getElementById('deadliftInput').value = '';
+        }
+
+        // Load history (updated for broad jump)
+        function loadHistory() {
+            const container = document.getElementById('historyList');
+            
+            if (state.progressLogs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-text">No progress logged yet</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...state.progressLogs].reverse();
+            let html = '';
+
+            sorted.forEach(log => {
+                const speedGain = state.baselineSpeed > 0 ? (log.speed - state.baselineSpeed).toFixed(1) : 0;
+                
+                html += `
+                    <div class="history-card">
+                        <div class="history-date">${log.date} • Week ${log.week}</div>
+                        <div class="history-stats">
+                            ${log.speed ? `
+                                <div class="history-stat">
+                                    <div class="history-stat-label">Speed</div>
+                                    <div class="history-stat-value">
+                                        ${log.speed} mph
+                                        ${speedGain > 0 ? `<span class="gain">+${speedGain}</span>` : ''}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${log.broadJump ? `
+                                <div class="history-stat">
+                                    <div class="history-stat-label">Broad Jump</div>
+                                    <div class="history-stat-value">${log.broadJump} ft</div>
+                                </div>
+                            ` : ''}
+                            ${log.deadlift ? `
+                                <div class="history-stat">
+                                    <div class="history-stat-label">Deadlift</div>
+                                    <div class="history-stat-value">${log.deadlift} lbs</div>
+                                </div>
+                            ` : ''}
+                            ${log.distance ? `
+                                <div class="history-stat">
+                                    <div class="history-stat-label">Distance</div>
+                                    <div class="history-stat-value">${log.distance} yds</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1997,12 +2648,36 @@
                 timeLeft--;
                 updateTimerDisplay();
                 
+                // Voice countdown announcements
+                if (timeLeft === 10) {
+                    speak("10 seconds");
+                } else if (timeLeft === 5) {
+                    speak("5");
+                } else if (timeLeft === 3) {
+                    speak("3");
+                } else if (timeLeft === 2) {
+                    speak("2");
+                } else if (timeLeft === 1) {
+                    speak("1");
+                }
+                
                 if (timeLeft <= 0) {
                     stopTimer();
+                    speak("Done");
                     showToast('⏱️ Rest complete!');
                     playBeep();
                 }
             }, 1000);
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.2;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                window.speechSynthesis.speak(utterance);
+            }
         }
 
         function stopTimer() {
