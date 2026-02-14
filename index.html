@@ -823,6 +823,11 @@
                 <button class="timer-btn" onclick="startTimer(180)">3m</button>
                 <button class="timer-btn stop" onclick="stopTimer()">Stop</button>
             </div>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-secondary" onclick="testVoice()" style="width: 100%; padding: 10px;">
+                    🔊 Test Voice (Tap First)
+                </button>
+            </div>
         </div>
     </div>
 
@@ -2639,10 +2644,52 @@
         let timerInterval = null;
         let timeLeft = 0;
 
+        // Speech synthesis setup
+        let voiceReady = false;
+        
+        function speak(text) {
+            if (!('speechSynthesis' in window)) {
+                console.log('Speech not supported');
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            utterance.lang = 'en-US';
+            
+            // For iPhone - use specific voice if available
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => 
+                voice.lang === 'en-US' && (voice.name.includes('Samantha') || voice.name.includes('Female'))
+            ) || voices[0];
+            
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+            voiceReady = true;
+        }
+
+        function testVoice() {
+            speak("Voice test successful");
+            showToast('🔊 Voice enabled!');
+        }
+
         function startTimer(seconds) {
             stopTimer();
             timeLeft = seconds;
             updateTimerDisplay();
+            
+            // Initialize voice on first use
+            if (!voiceReady) {
+                speak("Timer started");
+            }
             
             timerInterval = setInterval(() => {
                 timeLeft--;
@@ -2670,16 +2717,6 @@
             }, 1000);
         }
 
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 1.2;
-                utterance.pitch = 1;
-                utterance.volume = 1;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
         function stopTimer() {
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -2697,19 +2734,31 @@
         }
 
         function playBeep() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 800;
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log('Beep not supported');
+            }
+        }
+
+        // Initialize voices when they load (for iPhone)
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = function() {
+                const voices = window.speechSynthesis.getVoices();
+                console.log('Voices loaded:', voices.length);
+            };
         }
 
         // Toast notification
